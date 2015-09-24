@@ -1,0 +1,21 @@
+<table class="table table-striped">
+    
+    <tr>
+        <th></th>
+        <th>Item</th>
+        <th>Location</th>
+        <th>Name</th>
+        <th>Check out time</th>
+    
+    </tr>
+    
+{% for r in rows %}
+    <tr>
+        <td>Return</td>
+        <td>r['Item']</td>
+        <td>r['Firstname']</td>
+        <td>r['Lastname']</td>
+        <td>1:01PM 08/05/2015</td>
+    </tr>
+{% endfor %}
+</table>

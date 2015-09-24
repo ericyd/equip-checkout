@@ -1,0 +1,25 @@
+<table class="table table-striped">
+    
+    <tr>
+        <th>Item</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Check out time</th>
+        <th>Check in time</th>
+        <th>Checked in by</th>
+        <th>Notes</th>
+    
+    </tr>
+    
+{% for r in rows %}
+    <tr>
+        <td>{{ r['Item'] }}</td>
+        <td>{{ r['Name'] }}</td>
+        <td>{{ r['Location'] }}</td>
+        <td>{{ r['CheckoutTime'] }}</td>
+        <td>{{ r['CheckinTime'] }}</td>
+        <td>{{ r['CheckinBy'] }}</td>
+        <td>{{ r['Notes'] }}</td>
+    </tr>
+{% endfor %}
+</table>

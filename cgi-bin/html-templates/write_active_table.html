@@ -1,0 +1,40 @@
+<table class="table table-striped">
+    
+    <tr>
+        <th></th>
+        <th>Item</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Check out time</th>
+    
+    </tr>
+
+{% for r in old_rows %}
+    <tr class="danger">
+        <td>
+            <button type="button" class="btn btn-default" data-toggle="modal" title="Return {{ r['Item'] }} at {{ r['Location'] }}" data-itemid="{{r['Id']}}" data-target="#return-modal">
+                Return &nbsp; <i class="glyphicon glyphicon-log-in" aria-hidden="true"></i>
+            </button>
+        </td>
+        <td>{{ r['Item'] }}</td>
+        <td>{{ r['Name'] }}</td>
+        <td>{{ r['Location'] }}</td>
+        <td>{{ r['CheckoutTime'] }}</td>
+    </tr>
+{% endfor %}
+
+    
+{% for r in new_rows %}
+    <tr>
+        <td>
+            <button type="button" class="btn btn-default" data-toggle="modal" title="Return {{ r['Item'] }} at {{ r['Location'] }}" data-itemid="{{r['Id']}}" data-target="#return-modal">
+                Return &nbsp; <i class="glyphicon glyphicon-log-in" aria-hidden="true"></i>
+            </button>
+        </td>
+        <td>{{ r['Item'] }}</td>
+        <td>{{ r['Name'] }}</td>
+        <td>{{ r['Location'] }}</td>
+        <td>{{ r['CheckoutTime'] }}</td>
+    </tr>
+{% endfor %}
+</table>

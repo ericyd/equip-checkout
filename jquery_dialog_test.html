@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Dialog - Modal form</title>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+  <script>
+  $(function() {
+    
+  
+    var dialog, form;
+
+    dialog = $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      
+      buttons: {
+        // this needs to have a valid function after it
+        // but, that function can exist outside of jquery (e.g. AJAX)
+        // Actually, this button isn't required at all, but it makes it a bit better looking
+        "Create an account": nothing,
+        Cancel: function() {
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+        form[ 0 ].reset();
+        allFields.removeClass( "ui-state-error" );
+      }
+    });
+ 
+    form = dialog.find( "form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      addUser();
+    });
+ 
+    $( "#create-user" ).button().on( "click", function() {
+      dialog.dialog( "open" );
+    });
+    
+    
+  });
+  
+   function nothing() {
+    alert("shit");
+ }
+
+  </script>
+</head>
+<body>
+ 
+<div id="dialog-form" title="Custom Dialog Title">
+ 
+  <form>
+    <fieldset>
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+      <label for="email">Email</label>
+      <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <button type="submit" onclick="nothing()">did it</button>
+    </fieldset>
+  </form>
+</div>
+ 
+
+<button id="create-user">Create new user</button>
+ 
+ 
+</body>
+</html>
