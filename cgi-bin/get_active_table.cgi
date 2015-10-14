@@ -6,6 +6,7 @@ import sys
 import cgi
 import jinja2 as j
 import datetime
+import pw
 
 class GMT_7(datetime.tzinfo): 
     def utcoffset(self,dt): 
@@ -48,16 +49,16 @@ def get_active():
     tail = ""
 
     try:
-        # database: ericydco_Checkout
-        # User: ericydco_Equip
-        # Pass: @X0l0t15*
-        # Table: Equipment
+        database = pw.MySQL.database
+        username = pw.MySQL.username
+        password = pw.MySQL.password
+        table = pw.MySQL.table
         #    CREATE TABLE Equipment(Id INT PRIMARY KEY AUTO_INCREMENT, Item VARCHAR(20), Name VARCHAR(50), Location VARCHAR(10), CheckoutTime DATETIME, CheckinTime DATETIME, CheckinBy VARCHAR(15), Notes VARCHAR(100), Active INT, Psuid VARCHAR(20));
-        con = mdb.connect('localhost', 'ericydco_Equip', '@X0l0t15*', 'ericydco_Checkout')
+        con = mdb.connect('localhost', username, password, database)
         with con:
             cur = con.cursor(mdb.cursors.DictCursor)
             
-            cur.execute("USE ericydco_Checkout")
+            cur.execute("USE {0}".format(database))
             cur.execute("SELECT * FROM Equipment WHERE Active=1 AND CheckoutTime <= '{date}' {location_filter} ORDER BY CheckoutTime DESC".format(date=old, location_filter=filter))
             
             old_rows = cur.fetchall()
@@ -79,6 +80,8 @@ def get_active():
         
     except mdb.Error, e:
         rows = ()
+        new_rows = ()
+        old_rows = ()
         tail = """<div class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <strong>Error:</strong> {0}: {1}
@@ -86,7 +89,7 @@ def get_active():
 
     finally:
         
-        if not len(new_rows) == 0:
+        if len(new_rows) > 0 or len(old_rows) > 0:
             for r in old_rows:
                 r['CheckoutTime'] = r['CheckoutTime'].strftime("%I:%M%p %m/%d/%Y")
                 r['Item'] = r['Item'].upper()

@@ -6,6 +6,7 @@ import sys
 import cgi
 import jinja2 as j
 import datetime
+import pw
 
 class GMT_7(datetime.tzinfo): 
     def utcoffset(self,dt): 
@@ -61,16 +62,16 @@ def get_inactive():
     tail = ""
 
     try:
-        # database: ericydco_Checkout
-        # User: ericydco_Equip
-        # Pass: @X0l0t15*
-        # Table: Equipment
-        #    CREATE TABLE Equipment(Id INT PRIMARY KEY AUTO_INCREMENT, Item VARCHAR(20), Name VARCHAR(50), Location VARCHAR(10), CheckoutTime DATETIME, CheckinTime DATETIME, CheckinBy VARCHAR(15), Notes VARCHAR(100));
-        con = mdb.connect('localhost', 'ericydco_Equip', '@X0l0t15*', 'ericydco_Checkout')
+        database = pw.MySQL.database
+        username = pw.MySQL.username
+        password = pw.MySQL.password
+        table = pw.MySQL.table
+        #    CREATE TABLE Equipment(Id INT PRIMARY KEY AUTO_INCREMENT, Item VARCHAR(20), Name VARCHAR(50), Location VARCHAR(10), CheckoutTime DATETIME, CheckinTime DATETIME, CheckinBy VARCHAR(15), Notes VARCHAR(100), Active INT, Psuid VARCHAR(20));
+        con = mdb.connect('localhost', username, password, database)
         with con:
             cur = con.cursor(mdb.cursors.DictCursor)
             
-            cur.execute("USE ericydco_Checkout")
+            cur.execute("USE {0}".format(database))
             #  AND CheckoutTime >= '{date}' ORDER BY id DSC
             cur.execute("SELECT * FROM Equipment WHERE Active=0 AND CheckoutTime >= '{date}' {location_filter} ORDER BY CheckinTime DESC".format(date=notbefore, location_filter=filter) )
             #cur.execute("SELECT * FROM Equipment WHERE Active=0 ORDER BY Id ASC")
